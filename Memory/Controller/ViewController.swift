@@ -29,10 +29,8 @@ class ViewController: UIViewController {
             let card = game.cards[index]
             
             if card.isFaceUp {
-                if !card.isMatched {
-                    showCard(button, card)
-                } else {
-                    showCard(button, card)
+                showCard(button, card)
+                if card.isMatched {
                     DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(500)) {
                         button.setTitle("", for: .normal)
                         button.backgroundColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 0)

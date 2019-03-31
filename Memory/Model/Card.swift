@@ -26,7 +26,6 @@ struct Card {
     
     init() {
         self.id = Card.getUniqueIdentifier()
-        
     }
     
 }
