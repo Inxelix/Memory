@@ -42,6 +42,8 @@ class ViewController: UIViewController {
             }
         }
         
+        endOfGame()
+        
     }
     
     func emoji(for card: Card) -> String {
@@ -65,4 +67,22 @@ class ViewController: UIViewController {
         updateButtons()
     }
 
+    func endOfGame() {
+        if game.allCardsHaveBeenMatched {
+            DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(700)) {
+                let alert = UIAlertController(title: "U rock!", message: "Do you want to restart game?", preferredStyle: .alert)
+                
+                let action = UIAlertAction(title: "Restart", style: .default) { (action) in
+                    
+                    self.restartButtonTapped((Any).self)
+                    
+                }
+                
+                alert.addAction(action)
+                
+                self.present(alert, animated: true, completion: nil)
+            }
+        }
+    }
+    
 }

@@ -35,6 +35,14 @@ class Memory {
         }
     }
     
+    var allCardsHaveBeenMatched: Bool {
+        for index in cards.indices {
+            if !cards[index].isMatched { return false }
+        }
+        return true
+    }
+    
+    
     init(numberOfPairsOfCrads: Int) {
         for _ in 1 ... numberOfPairsOfCrads {
             let card = Card()
