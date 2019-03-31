@@ -18,7 +18,7 @@ struct Card {
     
     static func getUniqueIdentifier() -> Int {
         lastIdentifier += 1
-        if lastIdentifier == 8 {
+        if lastIdentifier == 12 {
             lastIdentifier = 0
         }
         return lastIdentifier
