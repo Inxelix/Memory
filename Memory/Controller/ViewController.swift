@@ -18,7 +18,7 @@ class ViewController: UIViewController {
     
     @IBAction func cardButtonAction(_ sender: UIButton) {
         if let cardIndex = cardButtons.firstIndex(of: sender) {
-            game.chooseCard(at: cardIndex)
+            game.chooseCard(at: cardIndex, cardButtons)
             updateButtons()
         }
     }

@@ -6,7 +6,7 @@
 //  Copyright © 2019 Тёма Загоскин. All rights reserved.
 //
 
-import Foundation
+import UIKit
 
 class Memory {
     
@@ -14,7 +14,7 @@ class Memory {
     
     var indexOfFaceUpCard: Int?
     
-    func chooseCard(at index: Int) {
+    func chooseCard(at index: Int, _ cardButtons: [UIButton]) {
         if cards[index].isMatched {
             return
         }
@@ -24,15 +24,18 @@ class Memory {
                 cards[matchIndex].isMatched = true
                 cards[index].isMatched = true
             }
-            cards[index].isFaceUp = true
+            DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(500)) {
+                self.flipCard(cardButtons, index)
+                self.flipCard(cardButtons, matchIndex)
+            }
             indexOfFaceUpCard = nil
         } else {
             for cardIndex in cards.indices {
                 cards[cardIndex].isFaceUp = false
             }
-            cards[index].isFaceUp = true
             indexOfFaceUpCard = index
         }
+        cards[index].isFaceUp = true
     }
     
     var allCardsHaveBeenMatched: Bool {
@@ -42,6 +45,11 @@ class Memory {
         return true
     }
     
+    func flipCard(_ card: [UIButton], _ index: Int) {
+        cards[index].isFaceUp = false
+        card[index].setTitle("", for: .normal)
+        card[index].backgroundColor = #colorLiteral(red: 0.5791940689, green: 0.1280144453, blue: 0.5726861358, alpha: 1)
+    }
     
     init(numberOfPairsOfCrads: Int) {
         for _ in 1 ... numberOfPairsOfCrads {
