@@ -10,17 +10,38 @@ import UIKit
 
 class ViewController: UIViewController {
     
-    lazy var game = Memory(numberOfPairsOfCrads: (cardButtons.count + 1) / 2)
-    var emojiList = ["🦊", "🐻", "🐼", "🐨", "🦁", "🐯", "🐵", "🦉", "🦇", "🐝", "🦄", "🐷", "🐣", "🐳", "🦋"]
+    var game: Memory!
+    
+    let emojiList = ["🦊", "🐻", "🐼", "🐨", "🦁", "🐯", "🐵", "🦉", "🦇", "🐝", "🦄", "🐷", "🐣", "🐳", "🦋"]
+    var emojiForCards: [String]!
     var emoji = [Int:String]()
     
+    let alert = UIAlertController(title: "U rock!", message: "Do you want to restart game?", preferredStyle: .alert)
+    
     @IBOutlet var cardButtons: [UIButton]!
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        createAlertAction()
+        newGame()
+    }
     
     @IBAction func cardButtonAction(_ sender: UIButton) {
         if let cardIndex = cardButtons.firstIndex(of: sender) {
             game.chooseCard(at: cardIndex, cardButtons)
             updateButtons()
         }
+    }
+    
+    func createAlertAction() {
+        
+        let action = UIAlertAction(title: "Restart", style: .default) { (action) in
+            
+            self.newGame()
+            
+        }
+        
+        alert.addAction(action)
     }
     
     func updateButtons() {
@@ -47,9 +68,9 @@ class ViewController: UIViewController {
     }
     
     func emoji(for card: Card) -> String {
-        if emoji[card.id] == nil, emojiList.count > 0 {
-            let randomIndex = Int.random(in: 0 ..< emojiList.count)
-            emoji[card.id] = emojiList.remove(at: randomIndex)
+        if emoji[card.id] == nil, emojiForCards.count > 0 {
+            let randomIndex = Int.random(in: 0 ..< emojiForCards.count)
+            emoji[card.id] = emojiForCards.remove(at: randomIndex)
         }
         
         return emoji[card.id]!
@@ -63,6 +84,11 @@ class ViewController: UIViewController {
     }
     
     @IBAction func restartButtonTapped(_ sender: Any) {
+        newGame()
+    }
+    
+    func newGame() {
+        emojiForCards = emojiList
         game = Memory(numberOfPairsOfCrads: (cardButtons.count + 1) / 2)
         updateButtons()
     }
@@ -70,17 +96,7 @@ class ViewController: UIViewController {
     func endOfGame() {
         if game.allCardsHaveBeenMatched {
             DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(700)) {
-                let alert = UIAlertController(title: "U rock!", message: "Do you want to restart game?", preferredStyle: .alert)
-                
-                let action = UIAlertAction(title: "Restart", style: .default) { (action) in
-                    
-                    self.restartButtonTapped((Any).self)
-                    
-                }
-                
-                alert.addAction(action)
-                
-                self.present(alert, animated: true, completion: nil)
+                self.present(self.alert, animated: true, completion: nil)
             }
         }
     }
